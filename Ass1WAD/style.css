@@ -1,0 +1,15 @@
+
+    body {
+      background: color #759759;;
+      padding-top: 50px;
+    }
+    .container {
+      background-color:#97596a;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(122, 113, 10, 0.1);
+      padding: 30px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
