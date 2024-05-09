@@ -1,0 +1,18 @@
+//Nodejs
+
+npm init
+
+npm install express --save
+
+//index.js
+const expres=require('express');
+const app=expres();
+
+app.use(expres.static('public'))
+
+app.listen(4000,()=>{
+    console.log("Server is Started")
+})
+
+
+//node index.js

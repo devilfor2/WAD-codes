@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,
+initial-scale=1.0">
+<title>User Registration</title>
+</head>
+<body>
+<div class="container mt-5">
+<h2>User Registration</h2>
+<form id="registrationForm">
+<div>
+<label for="name">Name:</label>
+<input type="text" class="form-control" id="name"
+name="name" required>
+</div>
+<div>
+<label for="age">Age:</label>
+<input type="number" class="form-control" id="age"
+name="age" required>
+</div>
+<div>
+<label for="phone">Phone:</label>
+<input type="text" class="form-control" id="phone"
+name="phone" required>
+</div>
+<button type="submit" class="btn btn-primary"
+id="btn">Register</button>
+<button type="button" class="btn btn-secondary"
+id="clearBtn">Clear</button>
+</form>
+<h2 class="mt-5">Registered Users</h2>
+<div class="table-wrapper mt-3">
+<table class="table table-striped table-bordered">
+<thead class="thead-dark">
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Age</th>
+<th>Phone</th>
+</tr>
+</thead>
+<tbody id="tbody">
+</tbody>
+</table>
+</div>
+</div>
+<script
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
+<script>
+$(document).ready(function () {
+let storedUser = JSON.parse(localStorage.getItem("users"))
+|| [];
+let displayData = () => {
+let tbody = document.getElementById("tbody");
+tbody.innerHTML = "";
+storedUser.forEach((user, index) => {
+tbody.innerHTML += `
+<tr>
+<td>${index + 1}</td>
+<td>${user.name}</td>
+<td>${user.age}</td>
+<td>${user.phone}</td>
+</tr>`;
+});
+};
+$("#registrationForm").submit(function (event) {
+event.preventDefault();
+const name = $("#name").val();
+const age = $("#age").val();
+const phone = $("#phone").val();
+if (name && age && phone) {
+let postObject = {
+name: name,
+age: age,
+phone: phone,
+};
+storedUser.unshift(postObject);
+localStorage.setItem("users",
+JSON.stringify(storedUser));
+displayData();
+} else {
+alert("Please fill in all the required fields.");
+}
+});
+$("#clearBtn").click(function () {
+$("input[type='text'], input[type='number']").val("");
+});
+displayData();
+});
+</script>
+</body>
+</html>

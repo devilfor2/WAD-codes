@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Custom styles */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .main{
+            display:flex;
+
+        }
+        .side{
+            
+            width: 20%;
+            background-color: #f0f0f0;
+            padding: 1rem;
+        }
+        .content{
+            width: 80%;
+            padding: 1rem;
+        }
+        #sidebar {
+            background-color: #343a40;
+            color: #fff;
+            height: 100vh;
+        }
+        #sidebar ul.navbar-nav li.nav-item {
+            padding: 10px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    
+    <div
+      class="offcanvas offcanvas-start sidebar-nav bg-dark side"
+      tabindex="-1"
+      id="sidebar"
+      >
+      <div class="offcanvas-body p-0">
+        <nav class="navbar-dark">
+          <ul class="navbar-nav">
+            <li>
+              <div class="text-muted small fw-bold text-uppercase px-3">
+                CORE
+              </div>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-3 active">
+                <span class="me-2"><i class="bi bi-speedometer2"></i></span>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
+            <li>
+              <div class="text-muted small fw-bold text-uppercase px-3 mb-3">
+                Interface
+              </div>
+            </li>
+            <li>
+              <a
+                class="nav-link px-3 sidebar-link"
+                data-bs-toggle="collapse"
+                href="#layouts"
+              >
+                <span class="me-2"><i class="bi bi-layout-split"></i></span>
+                <span>Layouts</span>
+                <span class="ms-auto">
+                  <span class="right-icon">
+                    <i class="bi bi-chevron-down"></i>
+                  </span>
+                </span>
+              </a>
+              <div class="collapse" id="layouts">
+                <ul class="navbar-nav ps-3">
+                  <li>
+                    <a href="#" class="nav-link px-3">
+                      <span class="me-2"
+                        ><i class="bi bi-speedometer2"></i
+                      ></span>
+                      <span>Dashboard</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-3">
+                <span class="me-2"><i class="bi bi-book-fill"></i></span>
+                <span>Pages</span>
+              </a>
+            </li>
+            <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
+            <li>
+              <div class="text-muted small fw-bold text-uppercase px-3 mb-3">
+                Addons
+              </div>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-3">
+                <span class="me-2"><i class="bi bi-graph-up"></i></span>
+                <span>Charts</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-3">
+                <span class="me-2"><i class="bi bi-table"></i></span>
+                <span>Tables</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    
+    </div>
+
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">College Admin</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <fiv class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#teachers">Teachers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#courses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#students">Students</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Settings</a>
+                    </li>
+                </ul>
+            </fiv>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+            <div class="container-fluid">
+                <!-- Dashboard Section -->
+                <section id="dashboard">
+                    <h2>Dashboard</h2>
+                    <div >
+                        <div class="col-md-4">
+                            <div class="card">
+                                <h5>Students</h5>
+                                <p>Total: <span id="totalStudents"></span></p>
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-4">
+                            <div class="card bg-primary text-white">
+                                <h5 class="card-header">Student Info</h5>
+                                <div class="card-body">
+                                    <p class="card-text">There are <span id="girlStudents"></span> girls and <span id="boyStudents"></span> boys in this College</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card bg-warning text-white">
+                                <h5 class="card-header">Courses</h5>
+                                <div class="card-body">
+                                    <p class="card-text">CS,IT,ENTC and ME are serve here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <canvas id="studentChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+            <!-- Teachers Section -->
+            <section id="teachers">
+                <h2>Teachers</h2>
+                
+                    <div class="col-md-4">
+                        <div class="card">
+                            <h5>Active Teachers</h5>
+                            <p>Total: 20</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-4">
+                        <div class="card bg-info text-white">
+                            <h5 class="card-header">Info Card</h5>
+                            <div class="card-body">
+                                <p class="card-text">This is an info card.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-4">
+                        <div class="card bg-secondary text-white">
+                            <h5 class="card-header">Secondary Card</h5>
+                            <div class="card-body">
+                                <p class="card-text">This is a secondary card.</p>
+                            </div>
+                        </div>
+                    </div>
+            
+            </section>
+
+            <!-- Courses Section -->
+            <section id="courses">
+                <h2>Courses</h2>
+                
+                    <div class="col-md-4">
+                        <div class="card">
+                            <h5>Available Courses</h5>
+                            <p>Total: 50</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-dark text-white">
+                            <h5 class="card-header">Dark Card</h5>
+                            <div class="card-body">
+                                <p class="card-text">This is a dark card.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-4">
+                        <div class="card bg-light">
+                            <h5 class="card-header">Light Card</h5>
+                            <div class="card-body">
+                                <p class="card-text">This is a light card.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+            
+            </section>
+
+            <!-- Students Section -->
+            <section id="students">
+                <h2>Students</h2>
+                
+                    <div class="col-md-4">
+                        <div class="card">
+                            <h5>Enrolled Students</h5>
+                            <p>Total: 800</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-primary text-white">
+                            <h5 class="card-header">Primary Card</h5>
+                            <div class="card-body">
+                                <p class="card-text">This is a primary card.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-4">
+                        <div class="card bg-warning text-white">
+                            <h5 class="card-header">Warning Card</h5>
+                            <div class="card-body">
+                                <p class="card-text">This is a warning card.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+            
+            </section>
+        </div>
+
+
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Generate random statistics
+        const totalStudents = Math.floor(Math.random() * 1000);
+        const girlStudents = Math.floor(Math.random() * 500);
+        const boyStudents = totalStudents - girlStudents;
+
+        // Update the HTML elements
+        document.getElementById('totalStudents').innerText = totalStudents;
+        document.getElementById('girlStudents').innerText = girlStudents;
+        document.getElementById('boyStudents').innerText = boyStudents;
+
+        // Chart.js configuration
+        const ctx = document.getElementById('studentChart').getContext('2d');
+        const studentChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total Students', 'Girls', 'Boys'],
+                datasets: [{
+                    label: 'Number of Students',
+                    data: [totalStudents, girlStudents, boyStudents],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------
+#index.js
+const express=require("express");
+const app=express();
+
+app.use(express.static('public'))
+
+app.listen(4000,()=>{
+
+    console.log("server is started")
+})

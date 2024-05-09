@@ -1,0 +1,462 @@
+index.html
+<!-- HTML5 doctype declaration -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tags to set character encoding, compatibility, and viewport scaling -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Page title -->
+    <title>Assignment 1B</title>
+
+    <!-- Linking Bootstrap CSS from a CDN with integrity check -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous" />
+
+    <!-- Linking a custom stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <!-- Main container to hold the content -->
+    <div class="container">
+        <!-- Button to open the modal for adding a new user -->
+        <button class="btn btn-outline-success mt-5" data-toggle="modal" data-target="#addNewUser">
+            Add New User
+        </button>
+
+        <!-- Table to display user information -->
+        <table class="table table-striped table-bordered my-5">
+            <thead>
+                <tr>
+                    <!-- Table headers -->
+                    <th scope="col">Sr No</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">City</th>
+                </tr>
+            </thead>
+            <!-- Table body to dynamically insert rows -->
+            <tbody id="tbody"></tbody>
+        </table>
+
+        <!-- Modal for adding a new user -->
+        <div class="modal fade" id="addNewUser">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal header with a close button -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Enter details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- Modal body containing a form to enter user details -->
+                    <div class="modal-body">
+                        <form>
+                            <!-- Form fields for user information -->
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input type="email" class="form-control" id="email" />
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" />
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" class="form-control" id="city" />
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="text" class="form-control" id="phone" />
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" />
+                            </div>
+                            <!-- Submit button to close the modal and submit the form -->
+                            <button type="submit" id="btn" data-dismiss="modal" class="btn btn-primary">
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom script for JavaScript functionality -->
+    <script src="./main.js"></script>
+
+    <!-- External scripts for jQuery, Popper.js, and Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"
+        integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+main.js
+// JavaScript event listener for the button with ID "btn"
+let btn = document.getElementById("btn");
+
+// Add an event listener to the button for the "click" event
+btn.addEventListener("click", (e) => {
+    // Prevent the default form submission behavior (like refreshing the page)
+    e.preventDefault();
+
+    // Get input values from form fields by their element IDs
+    const email = document.getElementById("email").value;
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const name = document.getElementById("name").value;
+    const city = document.getElementById("city").value;
+    const phone = document.getElementById("phone").value;
+
+    // Create an object to represent the new user, including address details
+    let postObject = {
+        email,   // User's email address
+        password,   // User's password
+        name,   // User's name
+        phone,   // User's phone number
+        username,   // User's username
+        address: {
+            city,   // User's city
+        },
+    };
+
+    // Retrieve stored users from local storage and parse them into a JavaScript array
+    // If no users are stored, create an empty array
+    let storedUser = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Add the new user to the start of the stored users array
+    storedUser.unshift(postObject);
+
+    // Store the updated users array back into local storage as a JSON string
+    localStorage.setItem("users", JSON.stringify(storedUser));
+
+    // Redirect to the registered users page to show the updated list of users
+    window.location.href = "registered-users.html"; // Redirect to the desired page
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+registered-users.html
+<!-- HTML document declaration with language attribute set to English -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tag to specify character encoding -->
+    <meta charset="UTF-8" />
+
+    <!-- Title of the page -->
+    <title>Registered Users</title>
+
+    <!-- Link to the external CSS file for styling -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Link to the JavaScript file that handles the logic for displaying registered users -->
+    <script src="./registered-users.js"></script>
+</head>
+
+<body>
+
+    <!-- Container to hold the content of the page -->
+    <div class="container">
+        <!-- Heading for the section -->
+        <h2>Registered Users</h2>
+
+        <!-- Table to display a list of registered users -->
+        <table class="table table-striped table-bordered">
+            <thead>
+                <!-- Table headers to define the structure of the data -->
+                <tr>
+                    <th scope="col">Sr No</th> <!-- Serial number column -->
+                    <th scope="col">Name</th> <!-- Name column -->
+                    <th scope="col">Username</th> <!-- Username column -->
+                    <th scope="col">Email</th> <!-- Email column -->
+                    <th scope="col">Phone</th> <!-- Phone number column -->
+                    <th scope="col">City</th> <!-- City column -->
+                </tr>
+            </thead>
+            <!-- Table body where registered user data will be dynamically inserted -->
+            <tbody id="userTableBody"></tbody>
+        </table>
+    </div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+registered-users.js
+// Event listener to trigger when the DOM content has fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+    // Get the table body element to populate with user data
+    const tbody = document.getElementById("userTableBody");
+
+    // Clear any existing content in the table body
+    tbody.innerHTML = "";
+
+    // Retrieve the user data from local storage and parse it into a JavaScript object/array
+    // If there's no data, default to an empty array
+    const storedUser = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Loop through the array of stored users and create table rows
+    storedUser.map((user, index) => {
+        // Add a new row to the table with user details
+        tbody.innerHTML += `
+            <tr>
+                <td>${index + 1}</td>  // Serial number based on the index
+                <td>${user.name}</td>  // User's name
+                <td>${user.username}</td>  // User's username
+                <td>${user.email}</td>  // User's email
+                <td>${user.phone}</td>  // User's phone number
+                <td>${user.address.city}</td>  // User's city from the address object
+            </tr>
+        `;
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* style.css */
+
+/* General body styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+
+    /* Background image settings */
+    background-image: url('background.jpg');
+    /* Use your image path or name */
+    background-size: cover;
+    /* Ensure the background image covers the whole area */
+    background-position: center;
+    /* Center the image */
+    background-repeat: no-repeat;
+    /* Prevent the background image from repeating */
+}
+
+
+
+/* Styling for the container */
+.container {
+    /* Use percentage width instead of fixed height */
+    max-width: 100%;
+    /* Use a percentage for fluidity */
+    margin: auto;
+    background: rgba(255, 255, 255, 0.8);
+    /* Keep semi-transparent for visibility */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+
+/* Button styling */
+.add-user-btn {
+    display: flex;
+    /* Aligns the button on the left side */
+    justify-content: flex-start;
+    /* Align to the left */
+    margin-bottom: 20px;
+    /* Add spacing below the button */
+}
+
+.add-user-btn .btn {
+    border: 1px solid #28a745;
+    color: #28a745;
+}
+
+.add-user-btn .btn:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Styling for the table */
+.table {
+    border: 1px solid #dee2e6;
+    background: transparent;
+    /* Make table background transparent */
+}
+
+.table th,
+.table td {
+    text-align: center;
+}
+
+/* Additional table styling */
+.table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tr:hover {
+    background-color: #e9ecef;
+}
+
+
+
+
+
+
+settings.json
+{
+    "liveServer.settings.port": 5502
+}

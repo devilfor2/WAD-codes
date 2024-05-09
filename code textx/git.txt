@@ -1,0 +1,7 @@
+git config --global user.name ab
+git init
+git add .
+git commit -m "hi"
+git status
+git remote add origin link
+git push origin master

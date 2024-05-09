@@ -1,0 +1,9 @@
+ls
+cat =see the contant
+scp =copy
+cd =change dir
+mkdir =
+touch = it makes a new file
+nano = editer
+
+scp tranfer.txt vagrant@172.0.0.4:/home/vagrant
